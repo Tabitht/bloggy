@@ -9,8 +9,8 @@ router.get('/:post', postsController.show);
 
 router.post('/', validateRequest, postsController.store);
 
-router.put('/', postsController.update);
+router.put('/:id', postsController.update);
 
-router.delete('/', postsController.Delete);
+router.delete('/:id', postsController.Delete);
 
 module.exports = router;
