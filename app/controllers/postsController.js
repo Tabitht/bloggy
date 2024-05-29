@@ -36,8 +36,34 @@ async function store(request, response) {
     }
 }
 
+async function update(request, response) {
+    try {
+        const result = await service.updatePostPost(request.body)
+   
+        response.status(201).json({ 'data': result})
+    } catch (error) {
+        console.log(`Error querying database: ${error}`);
+    
+        response.status(error.statusCode ?? 500).json({ 'data': { 'error': `${error.message}` } });
+    }
+}
+
+async function Delete(request, response) {
+    try {
+        const result = await service.deletePost(request.params.post)
+   
+        response.status(201).json({ 'data': result})
+    } catch (error) {
+        console.log(`Error querying database: ${error}`);
+    
+        response.status(error.statusCode ?? 500).json({ 'data': { 'error': `${error.message}` } });
+    }
+}
+
 module.exports = {
     index,
     show,
-    store
+    store,
+    update,
+    Delete
 }

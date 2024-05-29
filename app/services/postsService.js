@@ -41,8 +41,39 @@ async function createPost(postData) {
     return result;
 }
 
+async function updatePost(postData) {
+    const collection = await database.connect('posts');
+    
+    const today = new Date();
+
+    const result = await collection.updateOne({
+        id: ULID.ulid(),
+        title: postData.title,
+        slug: sluggify(postData.title),
+        author: postData.author,
+        body: postData.body,
+        is_featured: postData.is_featured ?? false,
+        created_at: format(today, 'yyyy-MM-dd'),
+        category: postData.category ?? "Uncategorized"
+    });
+
+    return result;
+}
+
+async function deletePost(postData) {
+    const collection = await database.connect('posts');
+
+    const result = await collection.deleteOne({
+        id: ULID.ulid(),
+    });
+
+    return result;
+}
+
 module.exports = {
     getPosts,
     getPost,
-    createPost
+    createPost,
+    updatePost,
+    deletePost  
 }
