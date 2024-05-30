@@ -50,22 +50,22 @@ async function updatePost(postData) {
         id: ULID.ulid(),
         title: postData.title,
         slug: sluggify(postData.title),
-        author: postData.author,
         body: postData.body,
-        is_featured: postData.is_featured ?? false,
-        created_at: format(today, 'yyyy-MM-dd'),
-        category: postData.category ?? "Uncategorized"
     });
 
     return result;
 }
 
-async function deletePost(postData) {
+async function deletePost(identifier) {
     const collection = await database.connect('posts');
 
     const result = await collection.deleteOne({
-        id: ULID.ulid(),
+        id: identifier
     });
+
+    if (result === null) {
+        throw new NotFound("Post not found.");
+    }
 
     return result;
 }
